@@ -216,10 +216,10 @@ class ComposerExtension(ExtensionHelper):
             
     def copy_dotenv(self):
         dot_env_path = os.path.join(self._ctx['BUILD_DIR'],
-                                   self._ctx['WEBDIR'],
+                                   'htdocs',
                                    '.env')
         dot_env_exapmle_path = os.path.join(self._ctx['BUILD_DIR'],
-                                   self._ctx['WEBDIR'],
+                                   'htdocs',
                                    '.env.example')
         
         os.rename(dot_env_exapmle_path,dot_env_path)
