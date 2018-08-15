@@ -221,8 +221,8 @@ class ComposerExtension(ExtensionHelper):
         dot_env_exapmle_path = os.path.join(self._ctx['BUILD_DIR'],
                                    'htdocs',
                                    '.env.example')
-        
-        os.rename(dot_env_exapmle_path,dot_env_path)
+        if not os.path.exists(dot_env_path) and os.path.exists(dot_env_exapmle_path):
+            os.rename(dot_env_exapmle_path,dot_env_path)
             
     def install(self):
         self._builder.install().package('PHP').done()
