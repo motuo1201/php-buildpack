@@ -192,6 +192,7 @@ class ComposerExtension(ExtensionHelper):
         self.composer_runner = ComposerCommandRunner(self._ctx, self._builder)
         self.clean_cache_dir()
         self.move_local_vendor_folder()
+        self.copy_dotenv()
         self.install()
         self.run()
 
@@ -212,7 +213,18 @@ class ComposerExtension(ExtensionHelper):
                 .into('{BUILD_DIR}/{LIBDIR}')
                 .where_name_matches('^%s/.*$' % vendor_path)
                 .done())
-
+            
+    def copy_dotenv(self):
+        dot_env_path = os.path.join(self._ctx['BUILD_DIR'],
+                                   self._ctx['WEBDIR'],
+                                   '.env')
+        dot_env_exapmle_path = os.path.join(self._ctx['BUILD_DIR'],
+                                   self._ctx['WEBDIR'],
+                                   '.env.example')
+        
+        if not os.path.exists(dot_env_path) and os.path.exists(dot_env_exapmle_path):
+            os.rename(dot_env_exapmle_path,dot_env_path)
+            
     def install(self):
         self._builder.install().package('PHP').done()
         if self._ctx['COMPOSER_VERSION'] == 'latest':
